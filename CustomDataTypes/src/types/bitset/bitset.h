@@ -67,7 +67,6 @@ struct bitset
 	/* Get the state of a bit at a specific index. Index can be greater than 64. If so, checks the further array elements. */
 	bool GetBit(unsigned int index) 
 	{
-		// if index is 0, -1 / 64 = 0 (rounding)
 		if (index >= GetAmountOfBits()) return false;
 		int arrayIndex = index / 64;
 		int bitIndex = index % 64;
