@@ -1,4 +1,5 @@
 #include "Array.h"
+#include <iostream>
 
 unsigned int ArrayDefaultCapacityIncrease(unsigned int currentCapacity) 
 {
