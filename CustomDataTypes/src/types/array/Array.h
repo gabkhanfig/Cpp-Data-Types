@@ -20,12 +20,9 @@ Dynamic Array:
 Array of dynamically changing size.
 
 @param - T: Type
-@param - initialCapacity (optional. default 1): The amount of elements allocated on construction of this array. 
-Can be overridden by copy constructor / initializer list constructor
 @param - capacityAllocator (optional. default ArrayDefaultCapacityIncrease): Pointer to a function that returns a new capacity from the current one for increasing.
 @param - str (optional. default ArrayDefaultName): Pointer to a function that returns a c-string representing the name of this array.
 Primarily for debug use.
-
 */
 template<
 	typename T,
@@ -227,7 +224,6 @@ public:
 		AppendArray(other);
 	}
 
-	
 };
 
 #undef ARRAY_EXTERN
