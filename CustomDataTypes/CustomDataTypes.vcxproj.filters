@@ -21,12 +21,18 @@
     <ClCompile Include="src\Benchmark\Benchmark.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\types\array\Array.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\types\bitset\bitset.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Benchmark\Benchmark.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\types\array\Array.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

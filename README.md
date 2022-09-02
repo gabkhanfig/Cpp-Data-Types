@@ -1,4 +1,6 @@
-Custom data types for C++
+<h1>Custom data types for C++</h1>
 
-Currently added types:
+<h3>Currently added types:</h1>
+
 - bitset
+- dynamic array
