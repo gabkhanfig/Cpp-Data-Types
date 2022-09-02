@@ -190,7 +190,7 @@ public:
 
 	/* Insert N elements from this one with static cast. */
 	template<typename U>
-	void InsertElementsCast(U* start, unsigned int amount) 
+	void InsertElementsCast(const U* start, unsigned int amount) 
 	{
 		if (size + amount >= capacity) {
 			Reallocate(size + amount);
