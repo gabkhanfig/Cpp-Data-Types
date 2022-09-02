@@ -70,7 +70,7 @@ public:
 		size = other.size;
 		data = new T[capacity];
 
-		for (int i = 0; i < size; i++) {
+		for (unsigned int i = 0; i < size; i++) {
 			data[i] = other.data[i];
 		}
 	}
@@ -196,7 +196,7 @@ public:
 			Reallocate(size + amount);
 		}
 
-		for (int i = 0; i < amount; i++) {
+		for (unsigned int i = 0; i < amount; i++) {
 			data[size] = static_cast<T>(start[i]);
 			size++;
 		}
@@ -210,7 +210,7 @@ public:
 			Reallocate(newSize);
 		}
 
-		for (int i = 0; i < other.size; i++) {
+		for (unsigned int i = 0; i < other.size; i++) {
 			data[size] = other.data[i];
 			size++;
 		}
