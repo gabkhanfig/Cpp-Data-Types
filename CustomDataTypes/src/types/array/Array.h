@@ -8,7 +8,7 @@
 #endif
 
 #ifdef ARRAY_DEBUG
-#define ARRAY_CHECK_OUT_OF_BOUNDS
+
 #endif
 
 /* Function pointer of array name. */
@@ -149,11 +149,9 @@ public:
 	@returns Reference to the item in the array. */
 	T& At(ArrInt index) 
 	{
-#ifdef ARRAY_CHECK_OUT_OF_BOUNDS
 		if (index >= size) {
 			ArrayError("index out of bounds from Array::At(). aborting");
 		}
-#endif
 		return data[index];
 	}
 
