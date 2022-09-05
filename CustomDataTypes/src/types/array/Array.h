@@ -54,9 +54,6 @@ public:
 		data = new T[initialCapacity];
 		capacity = initialCapacity;
 		size = 0;
-#ifdef ARRAY_NAME
-		name = "dynamic_array";
-#endif
 	}
 
 	/* Initializer list constructor */
@@ -71,9 +68,6 @@ public:
 			data[incrementor] = i;
 			incrementor++;
 		}
-#ifdef ARRAY_NAME
-		name = "dynamic_array";
-#endif
 	}
 
 	/* Copy constructor */
@@ -86,9 +80,6 @@ public:
 		for (ArrInt i = 0; i < size; i++) {
 			data[i] = other.data[i];
 		}
-#ifdef ARRAY_NAME
-		name = other.name;
-#endif
 	}
 
 	/* Destructor. Does not call destructors of data held within. */
