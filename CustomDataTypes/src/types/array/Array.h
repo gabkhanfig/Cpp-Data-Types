@@ -11,9 +11,6 @@
 
 #endif
 
-/* Function pointer of array name. */
-typedef const char* (*array_name)();
-
 /* Integer size type for array. */
 typedef unsigned int ArrInt;
 
