@@ -1,17 +1,21 @@
 #include "Array.h"
 #include <iostream>
+#include <string>
 
-unsigned int ArrayDefaultCapacityIncrease(unsigned int currentCapacity) 
+ArrInt _ArrayCapacityIncrease(ArrInt currentCapacity)
 {
-	return currentCapacity * 2;
+	if (currentCapacity == 0) {
+		return 2;
+	}
+	else if (currentCapacity < 5) {
+		return (currentCapacity + 1) * 2;
+	}
+	else {
+		return ArrInt(float(currentCapacity) * 1.618f);
+	}
 }
 
-const char* ArrayDefaultName() 
+void _ArrayError(const char* errorMessage) 
 {
-	return "unnamed_array";
-}
-
-void _ArrayError(const char* arrayName, const char* errorMessage) 
-{
-	std::cout << "[ARRAY ERROR]: \"" << arrayName << "\" " << errorMessage << '\n';
+	std::cout << "[ARRAY ERROR]: " << errorMessage << '\n';
 }

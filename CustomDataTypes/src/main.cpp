@@ -5,10 +5,9 @@
 #include <bitset>
 #include <iostream>
 #include <vector>
+#include <array>
 
 #define print(message) std::cout << message << '\n'
-
-const char* testArrName() { return "butt"; }
 
 class Base {
 	int a;
@@ -20,37 +19,28 @@ class Child : public Base {
 
 int main() 
 {
-	Array<int, ArrayDefaultCapacityIncrease, testArrName> arr;
-	arr.Add(7);
-	arr.Add(1);
-	arr.Add(3);
-	arr.Add(4);
-	print(arr[0]);
-	print(arr.GetName());
+	Array<int> a = { 3, 1, 4, 1, 1, 1, 5, 6, 4 };
+	for (int i = 0; i < a.Size(); i++) {
+		std::cout << a[i] << " ";
+	}
+	std::cout << '\n';
+	std::cout << a.Size() << " " << a.Capacity() << '\n';
 
-	auto arr2 = arr;
-	print(arr2[0]);
+	a.InsertAt(8, 5);
 
-	int* newInt = new int;
-	*newInt = 10;
-
-	print(arr.Size());
-
-	arr.InsertElements({ 1, 5, 2, 4, 6, 8, 2, 1, 5, 7, 6, 4, 5 });
-	print(arr.Size());
-
-	arr += arr2;
-	//print(arr.Size());
-
-	Array<Base*> arrBase;
-	arrBase.Add(new Base());
-	Array<Child*> arrChild;
-	arrChild.Add(new Child());
-	arrChild.Add(new Child());
-	arrChild.Add(new Child());
-	Array<int> arrInt = { 1, 2, 3, 4 };
-	//arrBase.Add(arrChild[0]);
-	arrBase.InsertElementsCast(&arrChild[0], 1);
-
+	for (int i = 0; i < a.Size(); i++) {
+		std::cout << a[i] << " ";
+	}
+	std::cout << '\n';
+	std::cout << a.Size() << " " << a.Capacity() << '\n';
 	
+	int out;
+	a.RemoveAt(5, &out);
+	for (int i = 0; i < a.Size(); i++) {
+		std::cout << a[i] << " ";
+	}
+	std::cout << '\n';
+	std::cout << a.Size() << " " << a.Capacity() << '\n';
+	std::cout << out;
+
 }
