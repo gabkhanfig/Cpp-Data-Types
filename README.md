@@ -1,3 +1,5 @@
+# Custom Data Types C++
+C++ custom data types
 <h1>Custom data types for C++</h1>
 
 <h3>Currently added types:</h1>
