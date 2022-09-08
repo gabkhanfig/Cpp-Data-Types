@@ -49,9 +49,9 @@ for (int i = 0; i < iterations; i++) {
 Benchmark::EndBenchmark(string_benchmark);
 ```
 
-This String:        22689ms
+> This String:        22689ms
+> Msvc std::string:   27045ms
 
-Msvc std::string:   27045ms
 
 String is able to do the following:
 
