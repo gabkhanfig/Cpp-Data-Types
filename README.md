@@ -29,7 +29,7 @@ Array is able to do the following:
 
 <h2>String</h2>
 
-String of byte sized chars. A replacement to std::string that supports [Small String Optimization](https://blogs.msmvps.com/gdicanio/2016/11/17/the-small-string-optimization/). This implementation differs by allowing small strings of up to a length of **32 characters** including the null terminator. Standard SSO implementations do not support this.
+String of byte sized chars. A replacement to std::string that supports [Small String Optimization](https://blogs.msmvps.com/gdicanio/2016/11/17/the-small-string-optimization/). This implementation differs by allowing small strings of up to a length of **32 characters** including the null terminator. Standard SSO implementations do not support this. The string (excluding heap string data) has a size of 32 bytes.
 
 10 million iterations in O2. (Ryzen 7 1700x @ 3.85GHz, 16GB 3200MHz RAM)
 
@@ -65,3 +65,25 @@ String is able to do the following:
 - Printing with std::cout support.
 
 <h2>Bitset</h2>
+
+Bitset of variable specified bitsize. Occupies only as much space as is necessary.
+
+> request bit amount <= 8: 1 byte (unsigned char)
+>
+> request bit amount <= 16: 2 bytes (unsigned short)
+>
+> request bit amount <= 32: 4 bytes (unsigned int)
+>
+> request bit amount <= 64: 8 bytes	(unsigned long long)
+>
+> request bit amount > 64: 16+ bytes (unsigned long long array)
+
+Bitset is able to do the following:
+
+- Small memory footprint for small bitsets (msvc std::bitset has a minimum size of 4 bytes).
+- Construct empty bitset with 0s.
+- Construct with pre-set flags.
+- Construct with pre-set flags array.
+- Index (supports index values greater than 63).
+- Set the boolean flag state of a specific index (same index rules as above).
+- Equivalency checks.
