@@ -44,6 +44,26 @@ private:
 
 public:
 
+	/* Array custom iterator. */
+	class iterator 
+	{
+	public:
+
+		iterator(T* _data) : data(_data) {}
+
+		iterator operator++() { ++data; return *this; }
+
+		bool operator!=(const iterator& other) const { return data != other.data; }
+
+		const T& operator*() const { return *data; }
+
+	private:
+
+		T* data;
+	};
+
+public:
+
 	/* Default constructor */
 	Array(ArrInt initialCapacity = 1)
 	{
@@ -83,6 +103,9 @@ public:
 	{
 		delete[] data;
 	}
+	
+	iterator begin() const { return iterator(data); }
+	iterator end() const { return iterator(data + size); }
 
 private:
 

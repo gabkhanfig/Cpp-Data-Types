@@ -5,7 +5,10 @@
 typedef unsigned char uint8;
 typedef unsigned long long uint64;
 
-constexpr uint64 MAX_SMALL_STRING_LENGTH = 31;
+#define MAX_SMALL_STRING_LENGTH			= 31;
+#define STRING_FLAG_SMALL_SIZE_BITS = 0b00011111;
+#define STRING_FLAG_IS_LONG					= 0b00100000;
+#define STRING_FLAG_UNUSED					= 0b11000000;
 
 /*
 Dynamically changing string, with small string optimization for strings of length 31 (excluding null terminator).
@@ -36,22 +39,24 @@ private:
 		};
 	};
 
+private:
+
 	/**/
 	inline void SetIsSmallString() 
 	{
-		flags = flags & 223;
+		flags = flags & (STRING_FLAG_UNUSED + STRING_FLAG_SMALL_SIZE_BITS);
 	}
 
 	/**/
 	inline void SetIsLongString() 
 	{
-		flags = flags | 32;
+		flags = flags | STRING_FLAG_IS_LONG;
 	}
 
-	/**/
+	/* Small string length is stored as an offset from the max length. */
 	inline uint64 SmallStringLength() const
 	{
-		return 31 - (flags & 31);
+		return MAX_SMALL_STRING_LENGTH - (flags & STRING_FLAG_SMALL_SIZE_BITS);
 	}
 
 	/**/
@@ -63,8 +68,7 @@ private:
 	/**/
 	inline void SetLengthSmall(uint8 SmallLength)
 	{
-		// Only the top 2 bits, not the "is long string" bit. This is an edge case ensuring a long string wont have it's flag size set.
-		flags = (31 - SmallLength) + (flags & 192);
+		flags = (MAX_SMALL_STRING_LENGTH - SmallLength) + (flags & STRING_FLAG_UNUSED);
 	}
 
 	/**/
@@ -119,7 +123,7 @@ public:
 	/* Copy constructor. Currently duplicates the string data of the other string. */
 	String(const String& Other) 
 	{
-		//std::cout << "copy constructor" << '\n';
+		std::cout << "copy constructor" << '\n';
 		SetLength(Other.Length());
 		if (IsSmallString()) {
 			memcpy(chars, Other.chars, SmallStringLength() + 1);
@@ -144,7 +148,7 @@ public:
 	/**/
 	inline bool IsSmallString() const
 	{
-		return !(flags & 32);
+		return !(flags & STRING_FLAG_IS_LONG);
 	}
 
 	/* Get as c string. Not a copy. */
@@ -203,5 +207,15 @@ public:
 	friend String operator + (const String& Left, const String& Right)
 	{
 		return String::ConcatenateStrings(Left, Right);
+	}
+
+	/**/
+	bool operator == (const char* Str) const {
+		return strcmp(CString(), Str) == 0;
+	}
+
+	/**/
+	bool operator == (const String& Other) const {
+		return strcmp(CString(), Other.CString()) == 0;
 	}
 };

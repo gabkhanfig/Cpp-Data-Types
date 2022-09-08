@@ -14,6 +14,7 @@ Array is able to do the following:
 
 - Custom size increasing from user defined or default allocator.
 - Construction time capacity reservation.
+- Iterator for range based for loop.
 - Adding an element (growing the array if necessary).
 - Adding many elements (doing a single reallocation if necessary).
 - Adding many polymorphic elements (same as above but supports type casting).
