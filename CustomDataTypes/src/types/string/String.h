@@ -5,10 +5,10 @@
 typedef unsigned char uint8;
 typedef unsigned long long uint64;
 
-#define MAX_SMALL_STRING_LENGTH			= 31;
-#define STRING_FLAG_SMALL_SIZE_BITS = 0b00011111;
-#define STRING_FLAG_IS_LONG					= 0b00100000;
-#define STRING_FLAG_UNUSED					= 0b11000000;
+#define MAX_SMALL_STRING_LENGTH			31
+#define STRING_FLAG_SMALL_SIZE_BITS 0b00011111
+#define STRING_FLAG_IS_LONG					0b00100000
+#define STRING_FLAG_UNUSED					0b11000000
 
 /*
 Dynamically changing string, with small string optimization for strings of length 31 (excluding null terminator).
