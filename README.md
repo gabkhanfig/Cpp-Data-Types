@@ -50,7 +50,7 @@ Benchmark::EndBenchmark(string_benchmark);
 ```
 
 > This String:        22689ms
-
+>
 > Msvc std::string:   27045ms
 
 
