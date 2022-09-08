@@ -142,11 +142,13 @@
     <ClCompile Include="src\types\array\Array.cpp" />
     <ClCompile Include="src\Benchmark\Benchmark.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\types\string\String.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\types\array\Array.h" />
     <ClInclude Include="src\Benchmark\Benchmark.h" />
     <ClInclude Include="src\types\bitset\bitset.h" />
+    <ClInclude Include="src\types\string\String.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

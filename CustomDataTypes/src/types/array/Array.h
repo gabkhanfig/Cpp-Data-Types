@@ -21,7 +21,6 @@ ARRAY_EXTERN ArrInt _ArrayCapacityIncrease(ArrInt currentCapacity);
 ARRAY_EXTERN void _ArrayError(const char* errorMessage);
 
 /*
-Dynamic Array:
 Array of dynamically changing size.
 
 @param - T: Type

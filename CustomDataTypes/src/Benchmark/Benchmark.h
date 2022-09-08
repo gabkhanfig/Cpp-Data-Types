@@ -17,5 +17,5 @@ public:
 
 	static Benchmark* StartBenchmark(const std::string& benchmarkName);
 
-	double EndBenchmark(Benchmark* benchmark);
+	static double EndBenchmark(Benchmark* benchmark);
 };
