@@ -217,7 +217,21 @@ public:
 		return strcmp(CString(), Other.CString()) == 0;
 	}
 
-	/**/
+	/* Set equal to a const char* string. If the string is small enough to be SSO'd, it will be. Copies the data. */
+	void operator = (const char* _String) 
+	{
+		SetLength(strlen(_String));
+		if (IsSmallString()) {
+			memcpy(chars, _String, SmallStringLength() + 1);
+		}
+		else {
+			capacity = LongStringLength() + 1;
+			data = new char[capacity];
+			memcpy(data, _String, LongStringLength() + 1);
+		}
+	}
+
+	/* Set equal to another string, copying the data. */
 	void operator = (const String& Other) 
 	{
 		SetLength(Other.Length());

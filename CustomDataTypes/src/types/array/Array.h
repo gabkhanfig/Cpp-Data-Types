@@ -440,6 +440,7 @@ public:
 		size--;
 	}
 
+	/* Set this array equal to another. */
 	void operator = (const Array<T> other) 
 	{
 		capacity = other.capacity;

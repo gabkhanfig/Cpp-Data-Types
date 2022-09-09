@@ -2,6 +2,10 @@
 
 #include <type_traits>
 
+#ifdef _DEBUG
+#define BITSET_CHECK_VALID_INDEX
+#endif
+
 /*
 		Bitset of variable specified bitsize. Bitset size of 0 bits not allowed (for obvious reasons).
 		This implementation exists due to std::bitset having a minimum size of 4 bytes.
@@ -67,18 +71,22 @@ struct bitset
 	/* Get the state of a bit at a specific index. Index can be greater than 64. If so, checks the further array elements. */
 	bool GetBit(unsigned int index) 
 	{
+#ifdef BITSET_CHECK_VALID_INDEX
 		if (index >= GetAmountOfBits()) return false;
-		int arrayIndex = index / 64;
-		int bitIndex = index % 64;
+#endif
+		const int arrayIndex = index / 64;
+		const int bitIndex = index % 64;
 		return (bitsArray[arrayIndex] >> bitIndex) & 1;
 	}
 
 	/* Set the state of a bit at a specific index. Index can be greater than 64. If so, sets flag of further array elements. */
 	void SetBit(unsigned int index, bool flag = true) 
 	{
+#ifdef BITSET_CHECK_VALID_INDEX
 		if (index >= GetAmountOfBits()) return;
-		int arrayIndex = index / 64;
-		int bitIndex = index % 64;
+#endif
+		const int arrayIndex = index / 64;
+		const int bitIndex = index % 64;
 		bitsArray[arrayIndex] ^= ((unsigned long long)(-flag) ^ bitsArray[arrayIndex]) & (1ULL << bitIndex);
 	}
 
@@ -88,17 +96,24 @@ struct bitset
 		return bitsArray[subsetIndex];
 	}
 
-	// Currently unnecessary
-	//void operator = (Bittype other) {
-	//	bits = other;
-	//}
+	/**/
+	void operator = (Bittype other) {
+		bits = other;
+	}
 	
-	// Currently unnecessary
-	//void operator = (const Bittype other[GetArrayNum()]) {
-	//	for (int i = 0; i < GetArrayNum(); i++) {
-	//		bitsArray[i] = other[i];
-	//	}
-	//}
+	/**/
+	void operator = (const Bittype other[GetArrayNum()]) {
+		for (int i = 0; i < GetArrayNum(); i++) {
+			bitsArray[i] = other[i];
+		}
+	}
+
+	/**/
+	void operator = (const bitset<bitQuantity> other) {
+		for (int i = 0; i < GetArrayNum(); i++) {
+			bitsArray[i] = other.bitsArray[i];
+		}
+	}
 
 	/* Boolean comparison of equality for another integer. */
 	bool operator == (Bittype other) 
@@ -118,7 +133,7 @@ struct bitset
 	}
 
 	/* Boolean comparison of another bitset. */
-	bool operator == (const bitset<GetAmountOfBits()> other) 
+	bool operator == (const bitset<bitQuantity> other) 
 	{
 		for (int i = 0; i < GetArrayNum(); i++) {
 			if (bitsArray[i] != other.bitsArray[i]) {

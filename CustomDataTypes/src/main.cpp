@@ -3,6 +3,7 @@
 #include "Types/bitset/bitset.h"
 #include "types/array/Array.h"
 #include "types/string/String.h"
+#include "types/map/Map.h"
 #include <bitset>
 #include <iostream>
 #include <vector>
@@ -10,19 +11,17 @@
 
 #define print(message) std::cout << message << '\n'
 
-void test_destruction() {
-	Array<Array<int>> a;
-	a.Add(Array<int>({ 1 }));
-	a.Add(Array<int>({ 1 }));
-	a.Add(Array<int>({ 1 }));
-	a.Add(Array<int>({ 1 }));
-	a.Add(Array<int>({ 1 }));
-	a.Add(Array<int>({ 1 }));
-	a.Add(Array<int>({ 1 }));
-	a.Add(Array<int>({ 1 }));
+void destr() {
+	for (int i = 0; i < 100000000; i++) {
+		
+	}
 }
 
 int main() 
 {
-	test_destruction();
+	destr();
+	//Array<Array<int>> arr(4);
+	Map<int, int> map;
+	print("a");
+	std::cin.get();
 }
