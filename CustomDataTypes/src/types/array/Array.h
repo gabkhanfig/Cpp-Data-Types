@@ -1,5 +1,6 @@
 #pragma once
 #include <utility>
+#include <iostream>
 
 #define ARRAY_EXTERN extern
 
@@ -31,7 +32,7 @@ template<
 	array_capacity_increase capacityInc = _ArrayCapacityIncrease>
 struct Array
 {
-private:
+public:
 
 	/* Pointer to data block. */
 	T* data;
@@ -437,6 +438,17 @@ public:
 			data[i] = std::move(data[i + 1]);
 		}
 		size--;
+	}
+
+	void operator = (const Array<T> other) 
+	{
+		capacity = other.capacity;
+		size = other.size;
+		data = new T[capacity];
+
+		for (ArrInt i = 0; i < size; i++) {
+			data[i] = other.data[i];
+		}
 	}
 };
 

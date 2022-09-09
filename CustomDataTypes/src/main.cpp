@@ -10,7 +10,19 @@
 
 #define print(message) std::cout << message << '\n'
 
+void test_destruction() {
+	Array<Array<int>> a;
+	a.Add(Array<int>({ 1 }));
+	a.Add(Array<int>({ 1 }));
+	a.Add(Array<int>({ 1 }));
+	a.Add(Array<int>({ 1 }));
+	a.Add(Array<int>({ 1 }));
+	a.Add(Array<int>({ 1 }));
+	a.Add(Array<int>({ 1 }));
+	a.Add(Array<int>({ 1 }));
+}
+
 int main() 
 {
-	
+	test_destruction();
 }

@@ -18,7 +18,7 @@ and fairly outperforms std::string in long string instantiation and concatenatio
 */
 struct String 
 {
-private:
+public:
 
 	/**/
 	union 
@@ -108,7 +108,6 @@ public:
 	Otherwise, this string will be a long string. */
 	String(const char* _String) 
 	{
-		//std::cout << "const char* constructor" << '\n';
 		SetLength(strlen(_String));
 		if (IsSmallString()) {
 			memcpy(chars, _String, SmallStringLength() + 1);
@@ -123,7 +122,6 @@ public:
 	/* Copy constructor. Currently duplicates the string data of the other string. */
 	String(const String& Other) 
 	{
-		std::cout << "copy constructor" << '\n';
 		SetLength(Other.Length());
 		if (IsSmallString()) {
 			memcpy(chars, Other.chars, SmallStringLength() + 1);
@@ -217,5 +215,21 @@ public:
 	/**/
 	bool operator == (const String& Other) const {
 		return strcmp(CString(), Other.CString()) == 0;
+	}
+
+	/**/
+	void operator = (const String& Other) 
+	{
+		SetLength(Other.Length());
+		if (IsSmallString()) {
+			memcpy(chars, Other.chars, SmallStringLength() + 1);
+			//Small = Other.Small;
+		}
+		else {
+			data = new char[LongStringLength() + 1];
+			memcpy(data, Other.data, LongStringLength() + 1);
+			//strcpy_s(Long.Data, LongStringLength() + 1, Other.Long.Data);
+			capacity = Other.capacity;
+		}
 	}
 };
