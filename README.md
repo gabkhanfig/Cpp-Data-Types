@@ -30,7 +30,7 @@ Array is able to do the following:
 
 <h2>String</h2>
 
-String of byte sized chars. A replacement to std::string that supports [Small String Optimization](https://blogs.msmvps.com/gdicanio/2016/11/17/the-small-string-optimization/). This implementation differs by allowing small strings of up to a length of **32 characters** including the null terminator. Standard SSO implementations do not support this. The string (excluding heap string data) has a size of 32 bytes.
+String of byte sized chars. A replacement to std::string that supports [**Small String Optimization**](https://blogs.msmvps.com/gdicanio/2016/11/17/the-small-string-optimization/). This implementation differs by allowing small strings of up to a length of **32 characters** including the null terminator. Standard SSO implementations do not support this. The string (excluding heap string data) has a size of 32 bytes.
 
 10 million iterations in O2. (Ryzen 7 1700x @ 3.85GHz, 16GB 3200MHz RAM)
 
