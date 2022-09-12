@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <types/array/Array.h>
 
 typedef unsigned char uint8;
 typedef unsigned long long uint64;
@@ -10,12 +11,10 @@ typedef unsigned long long uint64;
 #define STRING_FLAG_IS_LONG					0b00100000
 #define STRING_FLAG_UNUSED					0b11000000
 
-/*
-Dynamically changing string, with small string optimization for strings of length 31 (excluding null terminator).
+/* Dynamically changing string, with small string optimization for strings of length 31 (excluding null terminator).
 Occupies 32 bytes, same as msvc std::string, conviniently is a power of 2 to (hopefully) place multiple strings cleanly in cache lines.
 Supremely outperforms msvc std::string in small string instantiation and concatenation,
-and fairly outperforms std::string in long string instantiation and concatenation.
-*/
+and fairly outperforms std::string in long string instantiation and concatenation. */
 struct String 
 {
 public:
@@ -143,7 +142,7 @@ public:
 		}
 	}
 
-	/**/
+	/* Whether this string is currently using the small string implementation. */
 	inline bool IsSmallString() const
 	{
 		return !(flags & STRING_FLAG_IS_LONG);
@@ -207,13 +206,14 @@ public:
 		return String::ConcatenateStrings(Left, Right);
 	}
 
-	/**/
+	/* Equivalency. Only checks raw string data. */
 	bool operator == (const char* Str) const {
 		return strcmp(CString(), Str) == 0;
 	}
 
-	/**/
+	/* Equivalency. */
 	bool operator == (const String& Other) const {
+		if (Length() != Other.Length()) return false;
 		return strcmp(CString(), Other.CString()) == 0;
 	}
 
@@ -246,4 +246,28 @@ public:
 			capacity = Other.capacity;
 		}
 	}
+
+	/* Get a copy of a character at a specific index. */
+	char GetCharAt(const uint64 index) {
+		if (index >= Length()) return '\0';
+
+		return CString()[index];
+	}
+
+	/* Get a copy of the character at a specific index. */
+	char operator [] (const uint64 index) {
+		return GetCharAt(index);
+	}
+
+	/* Get a copy of a substring from a boundary.
+	@param start: character index (included).
+	@param end: character index (excluded). */
+	String Substring(uint64 start, uint64 end);
+	
+	/* Split string into a copy of array of strings given a character splitter. */
+	Array<String> Split(char splitter);
+
+	/* Split string into a copy of array of strings given a string splitter. */
+	Array<String> Split(const String& splitter);
+
 };

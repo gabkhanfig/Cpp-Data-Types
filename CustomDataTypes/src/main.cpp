@@ -19,9 +19,16 @@ void destr() {
 
 int main() 
 {
-	destr();
-	//Array<Array<int>> arr(4);
-	Map<int, int> map;
-	print("a");
-	std::cin.get();
+
+	String str = "i want candy";
+	String sub = str.Substring(4, 12);
+	print(sub);
+
+	//print(sub[6]);
+
+	String splitter = "hello, there, what's, up, today";
+	auto arr = splitter.Split(", ");
+	for (auto s : arr) {
+		print(s);
+	}
 }

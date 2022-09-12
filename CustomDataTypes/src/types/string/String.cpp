@@ -44,6 +44,79 @@ void String::AppendString(const String& Other)
 	}
 }
 
+String String::Substring(uint64 start, uint64 end)
+{
+	const uint64 len = Length();
+	if (start > len || end > len) {
+		std::cout << "String::Substring() start or end exceeds the strings current length.\n";
+		return String();
+	}
+
+	const uint64 newlen = end - start;
+	const char* cstr = CString();
+	char* substr = new char[newlen + 1];
+	memcpy(substr, &CString()[start], newlen);
+	substr[newlen] = '\0';
+	return String(substr);
+}
+
+Array<String> String::Split(char splitter)
+{
+	std::cout << "gonna split string " << *this << std::endl;
+
+	uint64 first = 0;
+
+	const char* cstr = CString();
+	const uint64 len = Length();
+
+	Array<String> arr;
+
+	for (int i = 0; i < len + 1; i++) {
+		if (cstr[i] == splitter) {
+			std::cout << "split found" << '\n';
+			arr.Add(Substring(first, i));
+			first = i + 1;
+			i++;
+		}
+
+		if (i == len) {
+			arr.Add(Substring(first, i));
+		}
+	}
+
+	return arr;
+}
+
+Array<String> String::Split(const String& splitter)
+{
+	uint64 first = 0;
+
+	const uint64 splitlen = splitter.Length();
+	const uint64 len = Length();
+	const char* cstr = CString();
+
+	Array<String> arr;
+
+	for (int i = 0; i < len + 1; i++) {
+		const uint64 end = i + splitlen;
+		if (end < len) {
+			if (Substring(i, end) == splitter) {
+				arr.Add(Substring(first, i));
+				first = end;
+				i += splitlen;
+			}
+		}
+
+		if (i == len) {
+			arr.Add(Substring(first, i));
+		}
+	}
+
+	return arr;
+}
+
+
+
 void String::IncreaseLongStringCapacity(uint64 MinCapacity)
 {
 	const uint64 NewCapacity = 3 * (MinCapacity) >> 1;
