@@ -82,6 +82,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)\CustomDataTypes\src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -144,6 +145,7 @@
     <ClCompile Include="src\Benchmark\Benchmark.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\types\map\Map.cpp" />
+    <ClCompile Include="src\types\string\SString.cpp" />
     <ClCompile Include="src\types\string\String.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -152,6 +154,7 @@
     <ClInclude Include="src\types\bitset\bitset.h" />
     <ClInclude Include="src\types\hashmap\hashmap.h" />
     <ClInclude Include="src\types\map\Map.h" />
+    <ClInclude Include="src\types\string\SString.h" />
     <ClInclude Include="src\types\string\String.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

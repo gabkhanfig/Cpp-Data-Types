@@ -10,11 +10,11 @@ Benchmark* Benchmark::StartBenchmark(const std::string& benchmarkName)
 	return benchmark;
 }
 
-double Benchmark::EndBenchmark(Benchmark* benchmark)
+double Benchmark::EndBenchmark()
 {
-	benchmark->end = std::chrono::high_resolution_clock::now();
-	double benchmarkEnd = std::chrono::duration<double, std::milli>(benchmark->end - benchmark->start).count();
-	std::cout << "[Benchmark]: Benchmark \"" + benchmark->name + "\" executed in " + std::to_string(benchmarkEnd) + " ms." << '\n';
-	delete benchmark;
+	end = std::chrono::high_resolution_clock::now();
+	double benchmarkEnd = std::chrono::duration<double, std::milli>(end - start).count();
+	std::cout << "[Benchmark]: Benchmark \"" + name + "\" executed in " + std::to_string(benchmarkEnd) + " ms." << '\n';
+	delete this;
 	return benchmarkEnd;
 }

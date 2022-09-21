@@ -11,7 +11,7 @@ ArrInt _ArrayCapacityIncrease(ArrInt currentCapacity)
 		return (currentCapacity + 1) * 2;
 	}
 	else {
-		return ArrInt(float(currentCapacity) * 1.618f);
+		return ArrInt(double(currentCapacity) * 1.618);
 	}
 }
 

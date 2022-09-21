@@ -1,34 +1,27 @@
 #include "Benchmark/Benchmark.h"
 
 #include "Types/bitset/bitset.h"
+
+//#define ARRAY_CHECK_OUT_OF_BOUNDS false
 #include "types/array/Array.h"
+
 #include "types/string/String.h"
+#include "types/string/SString.h"
+
 #include "types/map/Map.h"
 #include <bitset>
 #include <iostream>
 #include <vector>
 #include <array>
 
-#define print(message) std::cout << message << '\n'
+#include <immintrin.h>
 
-void destr() {
-	for (int i = 0; i < 100000000; i++) {
-		
-	}
-}
+#define print(message) std::cout << message << '\n'
 
 int main() 
 {
-
-	String str = "i want candy";
-	String sub = str.Substring(4, 12);
-	print(sub);
-
-	//print(sub[6]);
-
-	String splitter = "hello, there, what's, up, today";
-	auto arr = splitter.Split(", ");
-	for (auto s : arr) {
-		print(s);
-	}
+	SString a = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+	SString b = "bbuhaaisudhgoaiusyd;alsup";
+	a.Append(b);
+	print(a);
 }

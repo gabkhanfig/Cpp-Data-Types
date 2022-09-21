@@ -220,6 +220,8 @@ public:
 	/* Set equal to a const char* string. If the string is small enough to be SSO'd, it will be. Copies the data. */
 	void operator = (const char* _String) 
 	{
+		if (!IsSmallString() && data) delete[] data;
+
 		SetLength(strlen(_String));
 		if (IsSmallString()) {
 			memcpy(chars, _String, SmallStringLength() + 1);
@@ -234,6 +236,8 @@ public:
 	/* Set equal to another string, copying the data. */
 	void operator = (const String& Other) 
 	{
+		if (!IsSmallString() && data) delete[] data;
+
 		SetLength(Other.Length());
 		if (IsSmallString()) {
 			memcpy(chars, Other.chars, SmallStringLength() + 1);

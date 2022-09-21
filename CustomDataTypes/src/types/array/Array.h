@@ -1,15 +1,9 @@
 #pragma once
+
 #include <utility>
-#include <iostream>
 
-#define ARRAY_EXTERN extern
-
-#ifdef _DEBUG == 1
-#define ARRAY_DEBUG
-#endif
-
-#ifdef ARRAY_DEBUG
-
+#ifndef ARRAY_CHECK_OUT_OF_BOUNDS
+#define ARRAY_CHECK_OUT_OF_BOUNDS true
 #endif
 
 /* Integer size type for array. */
@@ -18,21 +12,24 @@ typedef unsigned int ArrInt;
 /* Function pointer of function that will output the new capacity value from the current one, when increasing size. */
 typedef ArrInt (*array_capacity_increase)(ArrInt);
 
-ARRAY_EXTERN ArrInt _ArrayCapacityIncrease(ArrInt currentCapacity);
-ARRAY_EXTERN void _ArrayError(const char* errorMessage);
+extern ArrInt _ArrayCapacityIncrease(ArrInt currentCapacity);
+extern void _ArrayError(const char* errorMessage);
 
 /*
 Array of dynamically changing size.
+Optionally disable out of bounds checks for indexing 
+by setting the ARRAY_CHECK_OUT_OF_BOUNDS macro to false by doing
+-- #define ARRAY_CHECK_OUT_OF_BOUNDS false -- before including this array header
 
-@param - T: Type
-@param - capacityInc (optional. default ArrayDefaultCapacityIncrease): Pointer to a function that returns a new capacity from the current one for increasing.
+@param - T: Type the array contains
+@param - capacityInc (optional. default _ArrayCapacityIncrease): Pointer to a function that returns a new capacity from the current one for increasing.
 */
 template<
 	typename T,
 	array_capacity_increase capacityInc = _ArrayCapacityIncrease>
 struct Array
 {
-public:
+private:
 
 	/* Pointer to data block. */
 	T* data;
@@ -147,22 +144,24 @@ private:
 public:
 
 	/* Get size of array. */
-	inline ArrInt Size() { return size; }
+	inline ArrInt Size() const { return size; }
 
 	/* Get size of array. */
-	inline ArrInt Num() { return size; }
+	inline ArrInt Num() const { return size; }
 
 	/* Get the current capacity of the array. */
-	inline ArrInt Capacity() { return capacity; }
+	inline ArrInt Capacity() const { return capacity; }
 
 	/* Get a reference to an element at a specific index. Will only check if correct index if ARRAY_CHECK_OUT_OF_BOUNDS macro is set.
 	@param index: Array index to check.
 	@returns Reference to the item in the array. */
 	T& At(ArrInt index) 
 	{
+		#if ARRAY_CHECK_OUT_OF_BOUNDS == true
 		if (index >= size) {
 			ArrayError("index out of bounds from Array::At(). aborting");
 		}
+		#endif
 		return data[index];
 	}
 
@@ -451,7 +450,15 @@ public:
 			data[i] = other.data[i];
 		}
 	}
-};
 
-#undef ARRAY_EXTERN
-#undef ARRAY_DEBUG
+	/* Concatenate two arrays into a new one. */
+	friend Array<T, capacityInc> operator + (const Array<T, capacityInc>& left, const Array<T, capacityInc>& right) 
+	{
+		Array<T, capacityInc> arr;
+		arr.Reserve(left.Size() + right.Size());
+		arr.InsertElements(left.data, left.Size());
+		arr.InsertElements(right.data, right.Size());
+		return arr;
+	}
+
+};
