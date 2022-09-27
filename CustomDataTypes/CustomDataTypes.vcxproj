@@ -118,6 +118,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -132,6 +133,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -147,6 +149,7 @@
     <ClCompile Include="src\types\map\Map.cpp" />
     <ClCompile Include="src\types\string\SString.cpp" />
     <ClCompile Include="src\types\string\String.cpp" />
+    <ClCompile Include="src\types\array\StaticArray.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\types\array\Array.h" />
@@ -156,6 +159,7 @@
     <ClInclude Include="src\types\map\Map.h" />
     <ClInclude Include="src\types\string\SString.h" />
     <ClInclude Include="src\types\string\String.h" />
+    <ClInclude Include="src\types\array\StaticArray.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

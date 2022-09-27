@@ -33,6 +33,9 @@
     <ClCompile Include="src\types\string\SString.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\types\array\StaticArray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\types\bitset\bitset.h">
@@ -54,6 +57,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\types\string\SString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\types\array\StaticArray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
