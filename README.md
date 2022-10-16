@@ -6,9 +6,11 @@
 - String
 - Bitset
 
+**Unit testing** is used.
+
 <h2>Dynamic Array</h2>
 
-Array of any type, that changes size dynamically. A replacement to std::vector, that has a size of 16 bytes. Error messages are intended to be more helpful.
+Array of any type, that changes size dynamically. A replacement to std::vector, that has a size of 16 bytes. Error messages are intended to be more helpful. **Unit testing at compile time**
 
 Array is able to do the following:
 

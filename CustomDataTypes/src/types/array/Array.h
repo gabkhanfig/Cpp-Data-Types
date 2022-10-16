@@ -12,8 +12,21 @@ typedef unsigned int ArrInt;
 /* Function pointer of function that will output the new capacity value from the current one, when increasing size. */
 typedef ArrInt (*array_capacity_increase)(ArrInt);
 
-extern ArrInt _ArrayCapacityIncrease(ArrInt currentCapacity);
+//extern ArrInt _ArrayCapacityIncrease(ArrInt currentCapacity);
 extern void _ArrayError(const char* errorMessage);
+
+constexpr ArrInt _ArrayCapacityIncrease(ArrInt currentCapacity)
+{
+	if (currentCapacity == 0) {
+		return 2;
+	}
+	else if (currentCapacity < 5) {
+		return (currentCapacity + 1) * 2;
+	}
+	else {
+		return ArrInt(double(currentCapacity) * 1.618);
+	}
+}
 
 /*
 Array of dynamically changing size.
@@ -47,7 +60,7 @@ public:
 	{
 	public:
 
-		iterator(T* _data) : data(_data) {}
+		constexpr iterator(T* _data) : data(_data) {}
 
 		iterator operator++() { ++data; return *this; }
 
@@ -63,10 +76,10 @@ public:
 public:
 
 	/* Default constructor */
-	Array(ArrInt initialCapacity = 1)
+	constexpr Array()
 	{
-		data = new T[initialCapacity];
-		capacity = initialCapacity;
+		data = new T[1];
+		capacity = 1;
 		size = 0;
 	}
 
@@ -85,7 +98,7 @@ public:
 	}
 
 	/* Copy constructor */
-	Array(const Array<T, capacityInc>& other)
+	Array(const Array<T>& other)
 	{
 		capacity = other.capacity;
 		size = other.size;
@@ -97,7 +110,7 @@ public:
 	}
 
 	/* Destructor. Does not call destructors of data held within. */
-	~Array()
+	constexpr ~Array()
 	{
 		delete[] data;
 	}
@@ -110,7 +123,7 @@ private:
 	/* Increase the capacity of the array from the provided capacity allocator. */
 	constexpr void IncreaseCapacityFromAllocator() 
 	{ 
-		Reallocate(capacityInc(capacity)); 
+		Reallocate(capacityInc(capacity));
 	}
 
 	/* Display an error message and abort the program.
@@ -124,7 +137,7 @@ private:
 	/* Reallocate the array to store a new capacity of elements.
 	If the new capacity is less than the current array size, array size is decreased to new capacity.
 	Be cautious of memory leaks due to array shrinking. */
-	void Reallocate(ArrInt newCapacity)
+	constexpr void Reallocate(ArrInt newCapacity)
 	{
 		T* newData = new T[newCapacity];
 
@@ -144,18 +157,15 @@ private:
 public:
 
 	/* Get size of array. */
-	inline ArrInt Size() const { return size; }
-
-	/* Get size of array. */
-	inline ArrInt Num() const { return size; }
+	constexpr inline ArrInt Size() const { return size; }
 
 	/* Get the current capacity of the array. */
-	inline ArrInt Capacity() const { return capacity; }
+	constexpr inline ArrInt Capacity() const { return capacity; }
 
 	/* Get a reference to an element at a specific index. Will only check if correct index if ARRAY_CHECK_OUT_OF_BOUNDS macro is set.
 	@param index: Array index to check.
 	@returns Reference to the item in the array. */
-	T& At(ArrInt index) 
+	constexpr T& At(ArrInt index)
 	{
 		#if ARRAY_CHECK_OUT_OF_BOUNDS == true
 		if (index >= size) {
@@ -168,14 +178,14 @@ public:
 	/* Index of operator. 
 	@param index: Array index to check.
 	@returns Reference to the item in the array. */
-	T& operator [] (ArrInt index) 
+	constexpr T& operator [] (ArrInt index) 
 	{
 		return At(index);
 	}
 
 	/* Increase array capacity to the supplied value IF the current capacity is less than the supplied.
 	@param newCapacity: The new capacity this array will hold. */
-	void Reserve(ArrInt newCapacity) 
+	constexpr void Reserve(ArrInt newCapacity) 
 	{
 		if (newCapacity > capacity) {
 			Reallocate(newCapacity);
@@ -190,7 +200,7 @@ public:
 	}
 
 	/* Add element to the end of the array by const ref. */
-	void Add(const T& value) 
+	constexpr void Add(const T& value) 
 	{
 		if (size == capacity) {
 			IncreaseCapacityFromAllocator();
@@ -201,7 +211,7 @@ public:
 	}
 
 	/* Add element to the end of the array by r value reference. */
-	void Add(T&& value) 
+	constexpr void Add(T&& value) 
 	{
 		if (size == capacity) {
 			IncreaseCapacityFromAllocator();
@@ -213,7 +223,7 @@ public:
 
 	/* Insert N elements from an initializer list. Only performs one capacity increase. 
 	@param il: Initializer list values. */
-	void InsertElements(const std::initializer_list<T>& il) 
+	constexpr void InsertElements(const std::initializer_list<T>& il) 
 	{
 		const ArrInt ilSize = il.size();
 		if (size + ilSize >= capacity) {
@@ -229,7 +239,7 @@ public:
 	/* Insert N elements from a specified start element. Only performs one capacity increase. 
 	@param start: Pointer to an array of T value(s).
 	@param amount: amount of T's to insert. */
-	void InsertElements(const T* start, ArrInt amount)
+	constexpr void InsertElements(const T* start, ArrInt amount)
 	{
 		if (size + amount >= capacity) {
 			Reallocate(size + amount);
@@ -245,7 +255,7 @@ public:
 	@param start: Pointer to an array of U value(s).
 	@param amount: amount of U's to insert. */
 	template<typename U>
-	void InsertElementsCast(const U* start, ArrInt amount) 
+	constexpr void InsertElementsCast(const U* start, ArrInt amount) 
 	{
 		if (size + amount >= capacity) {
 			Reallocate(size + amount);
@@ -452,13 +462,41 @@ public:
 	}
 
 	/* Concatenate two arrays into a new one. */
-	friend Array<T, capacityInc> operator + (const Array<T, capacityInc>& left, const Array<T, capacityInc>& right) 
+	friend Array<T> operator + (const Array<T>& left, const Array<T>& right) 
 	{
-		Array<T, capacityInc> arr;
+		Array<T> arr;
 		arr.Reserve(left.Size() + right.Size());
 		arr.InsertElements(left.data, left.Size());
 		arr.InsertElements(right.data, right.Size());
 		return arr;
 	}
 
+	/* Try to get the index of an element in the array.
+	@param element: The element being searched for.
+	@param outIndex: Out param for the found index.
+	@return If the index was successfully found.*/
+	bool TryGetIndex(const T& element, ArrInt& outIndex) 
+	{
+		for (ArrInt i = 0; i < Size(); i++) {
+			if (At(i) == element) {
+				outIndex = i;
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**/
+	void FillWith(const T& element) 
+	{
+		for (ArrInt i = Size(); i < Capacity(); i++) {
+			Add(element);
+		}
+	}
+
+	/* DANGEROUS!!!!! */
+	constexpr T* GetRawData() 
+	{
+		return data;
+	}
 };
