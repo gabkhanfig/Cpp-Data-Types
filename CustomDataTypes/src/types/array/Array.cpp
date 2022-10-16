@@ -31,7 +31,7 @@ namespace ArrayCompileUnitTests
 	}
 	TEST_ASSERT(ArrayReserveCapacity());
 
-	/**/
+	/* Ensure dynamic allocator does indeed allocate enough. */
 	constexpr bool ArrayCorrectBounds() 
 	{
 		auto arr = Array<int>();
@@ -41,18 +41,19 @@ namespace ArrayCompileUnitTests
 	}
 	TEST_ASSERT(ArrayCorrectBounds());
 
-	/**/
+	/* Add multiple elements to an array, verifying it's size increases appropriately. */
 	constexpr bool ArrayMultiAdd() 
 	{
 		auto arr = Array<int>();
 		for (int i = 0; i < 20; i++) {
 			arr.Add(i);
+			if (arr[i] != i) return;
 		}
 		return arr.Size() == 20;
 	}
 	TEST_ASSERT(ArrayMultiAdd());
 
-	/**/
+	/* Insert multiple elements by initializer list. */
 	constexpr bool ArrayInsertElementsInitializerList() 
 	{
 		auto arr = Array<int>();
@@ -61,7 +62,7 @@ namespace ArrayCompileUnitTests
 	}
 	TEST_ASSERT(ArrayInsertElementsInitializerList());
 
-	/**/
+	/* Insert multiple elements by pointer and count. */
 	constexpr bool ArrayInsertElementsPointer() 
 	{
 		auto arr = Array<int>();
@@ -75,7 +76,7 @@ namespace ArrayCompileUnitTests
 	}
 	TEST_ASSERT(ArrayInsertElementsPointer());
 
-	/**/
+	/* Append one array onto another. */
 	constexpr bool ArrayAppendOther() 
 	{
 		Array<int> a = { 1, 2, 3, 4, 5, 6, 7, 8 };
@@ -85,7 +86,7 @@ namespace ArrayCompileUnitTests
 	}
 	TEST_ASSERT(ArrayAppendOther());
 
-	/**/
+	/* Does array contain a given element. */
 	constexpr bool ArrayContains() 
 	{
 		Array<int> arr = { 90, 100, 236236, 28, 2 };
@@ -93,7 +94,7 @@ namespace ArrayCompileUnitTests
 	}
 	TEST_ASSERT(ArrayContains());
 
-	/**/
+	/* Find an item in the array along with it's index. */
 	constexpr bool ArrayFind() 
 	{
 		Array<int> arr = { 90, 100, 236236, 28, 2 };
@@ -107,7 +108,7 @@ namespace ArrayCompileUnitTests
 	}
 	TEST_ASSERT(ArrayFind());
 
-	/**/
+	/* Find the nth occurrence of an item in the array. */
 	constexpr bool ArrayFindOccurrence() 
 	{
 		Array<int> arr = { 200, 1, 1, 201, 1, 25, 52 };
@@ -121,7 +122,7 @@ namespace ArrayCompileUnitTests
 	}
 	TEST_ASSERT(ArrayFindOccurrence());
 
-	/**/
+	/* Find the last occurrence of an item in the array. */
 	constexpr bool ArrayFindLast() 
 	{
 		Array<int> arr = { 200, 1, 1, 201, 1, 25, 52 };
@@ -135,7 +136,7 @@ namespace ArrayCompileUnitTests
 	}
 	TEST_ASSERT(ArrayFindLast());
 
-	/**/
+	/* Ensure array removes elements and keeps order upon removal of one. */
 	constexpr bool ArrayRemove() 
 	{
 		Array<int> arr = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
@@ -144,7 +145,7 @@ namespace ArrayCompileUnitTests
 	}
 	TEST_ASSERT(ArrayRemove());
 
-	/**/
+	/* Ensure array removes elements and keeps order upon removal of an occurrence of an element. */
 	constexpr bool ArrayRemoveOccurrence() 
 	{
 		Array<int> arr = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
@@ -153,7 +154,7 @@ namespace ArrayCompileUnitTests
 	}
 	TEST_ASSERT(ArrayRemoveOccurrence());
 
-	/**/
+	/* Remove all occurrences of an element of the array, maintaining order of all other elements. */
 	constexpr bool ArrayRemoveAll() 
 	{
 		Array<int> arr = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
@@ -162,7 +163,7 @@ namespace ArrayCompileUnitTests
 	}
 	TEST_ASSERT(ArrayRemoveAll());
 
-	/**/
+	/* Shrink the array to fit the amount of data it contains. */
 	constexpr bool ArrayShrink() 
 	{
 		Array<int> arr;
@@ -173,7 +174,7 @@ namespace ArrayCompileUnitTests
 	}
 	TEST_ASSERT(ArrayShrink());
 
-	/**/
+	/* Insert an element at a specific index, shifting the arrays elements if necessary. */
 	constexpr bool ArrayInsertAt() 
 	{
 		Array<int> arr = { 1, 2, 3, 4, 5, 6, 7, 8 };
@@ -182,7 +183,7 @@ namespace ArrayCompileUnitTests
 	}
 	TEST_ASSERT(ArrayInsertAt());
 
-	/**/
+	/* Remove an element at a specific index, preserving order of the leftover elements. */
 	constexpr bool ArrayRemoveAt() 
 	{
 		Array<int> arr = { 1, 2, 3, 4, 5, 6, 7, 8 };
@@ -192,7 +193,7 @@ namespace ArrayCompileUnitTests
 	}
 	TEST_ASSERT(ArrayRemoveAt());
 
-	/**/
+	/* Copy an array into another one. */
 	constexpr bool ArrayCopy() 
 	{
 		Array<int> a;
@@ -202,7 +203,7 @@ namespace ArrayCompileUnitTests
 	}
 	TEST_ASSERT(ArrayCopy());
 
-	/**/
+	/* Concatenate two arrays into a new third array. */
 	constexpr bool ArrayConcatenate() 
 	{
 		Array<int> a = { 1, 54, 25, 6, 2, 6, 5 };
@@ -212,7 +213,7 @@ namespace ArrayCompileUnitTests
 	}
 	TEST_ASSERT(ArrayConcatenate());
 
-	/**/
+	/* Try to get the index of a valid and invalid element. */
 	constexpr bool ArrayTryGetIndex() 
 	{
 		Array<int> a = { 1, 54, 25, 6, 2, 6, 5 };
@@ -228,7 +229,7 @@ namespace ArrayCompileUnitTests
 	}
 	TEST_ASSERT(ArrayTryGetIndex());
 
-	/**/
+	/* Fill an array up to it's maximum allocated capacity with a specified element. */
 	constexpr bool ArrayFillWith() 
 	{
 		Array<int> arr;
