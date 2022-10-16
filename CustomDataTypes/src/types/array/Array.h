@@ -84,7 +84,7 @@ public:
 	}
 
 	/* Initializer list constructor */
-	Array(const std::initializer_list<T>& il)
+	constexpr Array(const std::initializer_list<T>& il)
 	{
 		size = il.size();
 		capacity = il.size();
@@ -98,7 +98,7 @@ public:
 	}
 
 	/* Copy constructor */
-	Array(const Array<T>& other)
+	constexpr Array(const Array<T>& other)
 	{
 		capacity = other.capacity;
 		size = other.size;
@@ -115,8 +115,8 @@ public:
 		delete[] data;
 	}
 	
-	iterator begin() const { return iterator(data); }
-	iterator end() const { return iterator(data + size); }
+	constexpr iterator begin() const { return iterator(data); }
+	constexpr iterator end() const { return iterator(data + size); }
 
 private:
 
@@ -268,7 +268,7 @@ public:
 	}
 
 	/* Add the contents of another array to this one. */
-	void AppendArray(const Array<T, capacityInc>& other) 
+	constexpr void AppendArray(const Array<T, capacityInc>& other) 
 	{
 		const ArrInt newSize = size + other.size; 
 		if (newSize > capacity) {
@@ -282,7 +282,7 @@ public:
 	}
 
 	/* Append another array to this one. */
-	void operator += (const Array<T, capacityInc>& other)
+	constexpr void operator += (const Array<T, capacityInc>& other)
 	{
 		AppendArray(other);
 	}
@@ -290,7 +290,7 @@ public:
 	/* Check if the array contains a given element. Optionally pass out the index of the first found instance of that element.
 	@param element: Comparison value. 
 	@param indexOut (optional): Pointer to array integer type to insert the found element index. */
-	bool Contains(const T& element, ArrInt* indexOut = nullptr) 
+	constexpr bool Contains(const T& element, ArrInt* indexOut = nullptr) 
 	{
 		for (ArrInt i = 0; i < size; i++) {
 			if (element == At(i)) {
@@ -309,7 +309,7 @@ public:
 	@param indexOut (optional): Pointer to array integer type to insert the found element index. 
 	@param occurrence (optional): nth occurrence of the element.
 	@returns Pointer to the found element. nullptr if not found. */
-	T* Find(const T& element, ArrInt* indexOut = nullptr, ArrInt occurrence = 1) 
+	constexpr T* Find(const T& element, ArrInt* indexOut = nullptr, ArrInt occurrence = 1) 
 	{
 		ArrInt occurrenceCount = 1;
 		for (ArrInt i = 0; i < size; i++) {
@@ -332,7 +332,7 @@ public:
 	@param element: Comparison value. 
 	@param indexOut (optional): Pointer to array integer type to insert the found element index.
 	@returns Pointer to the found element. nullptr if not found. */
-	T* FindLast(const T& element, ArrInt* indexOut = nullptr) 
+	constexpr T* FindLast(const T& element, ArrInt* indexOut = nullptr) 
 	{
 		bool reachedEnd = false;
 		ArrInt i = size - 1;
@@ -355,12 +355,15 @@ public:
 	Doesn't shrink array, but does decrement size if item is found. 
 	@param element: Comparison value. 
 	@param occurrence (optional): nth occurrence of the element. */
-	void Remove(const T& element, ArrInt occurrence = 1)
+	constexpr void Remove(const T& element, ArrInt occurrence = 1)
 	{
 		ArrInt occurrenceCount = 1;
 		for (ArrInt i = 0; i < size; i++) {
 			if (element == At(i)) {
 				if (occurrenceCount == occurrence) {
+
+					~At(i);
+
 					for (ArrInt j = (i); j < (size - 1); j++) {
 						data[j] = std::move(data[j + 1]);
 					}
@@ -378,7 +381,7 @@ public:
 	Doesn't shrink array, but does decrement size if item is found.
 	@param element: Comparison value. 
 	@returns Amount of elements removed from the array. */
-	ArrInt RemoveAll(const T& element) 
+	constexpr ArrInt RemoveAll(const T& element) 
 	{
 		ArrInt amount = 0;
 		ArrInt i = 0;
@@ -403,7 +406,7 @@ public:
 	}
 
 	/* Shrinks the array to the smallest possible size to store all elements. */
-	void Shrink() 
+	constexpr void Shrink() 
 	{
 		Reallocate(size);
 	}
@@ -411,7 +414,7 @@ public:
 	/* Insert an element in the array at a specified index, shifting all elements after it over by 1.
 	@param element: Element to insert into the array.
 	@param index: Index to insert at. */
-	void InsertAt(const T& element, ArrInt index) 
+	constexpr void InsertAt(const T& element, ArrInt index) 
 	{
 		if (index >= size) {
 			ArrayError("index out of bounds from Array::InsertAt(). aborting");
@@ -433,7 +436,7 @@ public:
 	/* Remove an element at a specified index, shifting all elements after it over by 1.
 	@param index: Index to remove.
 	@param outElement (optional): Pointer to element type to copy the removed element to. */
-	void RemoveAt(ArrInt index, T* outElement = nullptr) 
+	constexpr void RemoveAt(ArrInt index, T* outElement = nullptr) 
 	{
 		if (index >= size) {
 			ArrayError("index out of bounds from Array::RemoveAt(). aborting");
@@ -441,6 +444,9 @@ public:
 
 		if (outElement) {
 			*outElement = At(index);
+		}
+		else {
+			~At(index);
 		}
 
 		for (ArrInt i = index; i < size - 1; i++) {
@@ -450,8 +456,11 @@ public:
 	}
 
 	/* Set this array equal to another. */
-	void operator = (const Array<T> other) 
+	constexpr void operator = (const Array<T> other) 
 	{
+		if (data)
+			delete[] data;
+
 		capacity = other.capacity;
 		size = other.size;
 		data = new T[capacity];
@@ -462,7 +471,7 @@ public:
 	}
 
 	/* Concatenate two arrays into a new one. */
-	friend Array<T> operator + (const Array<T>& left, const Array<T>& right) 
+	constexpr friend Array<T> operator + (const Array<T>& left, const Array<T>& right) 
 	{
 		Array<T> arr;
 		arr.Reserve(left.Size() + right.Size());
@@ -475,7 +484,7 @@ public:
 	@param element: The element being searched for.
 	@param outIndex: Out param for the found index.
 	@return If the index was successfully found.*/
-	bool TryGetIndex(const T& element, ArrInt& outIndex) 
+	constexpr bool TryGetIndex(const T& element, ArrInt& outIndex) 
 	{
 		for (ArrInt i = 0; i < Size(); i++) {
 			if (At(i) == element) {
@@ -487,7 +496,7 @@ public:
 	}
 
 	/**/
-	void FillWith(const T& element) 
+	constexpr void FillWith(const T& element) 
 	{
 		for (ArrInt i = Size(); i < Capacity(); i++) {
 			Add(element);
