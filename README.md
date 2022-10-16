@@ -29,6 +29,7 @@ Array is able to do the following:
 - Shrink an array so that it's capacity is equal to the amount of stored elements.
 - Insert an element at a specific index, shifting the array.
 - Remove an element at a specific index, shifting the array.
+- Constexpr functionality.
 
 <h2>String</h2>
 
