@@ -28,7 +28,7 @@ struct Test {
 	}
 
 	~Test() {
-		print("Test destructor");
+		//print("Test destructor");
 		delete a;
 	}
 
@@ -37,7 +37,6 @@ struct Test {
 	}
 
 	void operator = (const Test& other) {
-		a = new int;
 		*a = *other.a;
 	}
 };
@@ -48,9 +47,13 @@ int main() {
 	for (int i = 0; i < count; i++) {
 		Array<Test> arr;
 		Test t = Test();
-		//Test t1 = Test();
+		////Test t1 = Test();
 		arr.Add(Test());
-		//arr.Remove(t);
+		////arr.Remove(t);
+		//
+
+		//std::vector<Test> vec;
+		//vec.push_back(t);
 		print(i);
 	}
 	

@@ -15,7 +15,7 @@ void _ArrayError(const char* errorMessage)
 PRAGMA_MESSAGE([RUN UNIT TEST]:  test);	\
 static_assert(test, "[Array Compile Unit Test]: " #test)
 
-//#define RUN_UNIT_TESTS_AT_COMPILE
+#define RUN_UNIT_TESTS_AT_COMPILE
 #ifdef RUN_UNIT_TESTS_AT_COMPILE
 namespace ArrayCompileUnitTests
 {
@@ -25,6 +25,10 @@ namespace ArrayCompileUnitTests
 		auto arr = Array<int>();
 		arr.Add(15124);
 		auto tmp = arr[0];
+
+		int a = 10;
+
+
 		return tmp == 15124;
 	}
 	TEST_ASSERT(ArraySingleAdd());

@@ -75,6 +75,10 @@ public:
 		T* data;
 	};
 
+	constexpr bool IsTypeDestructible() {
+		return std::is_destructible_v<T>;
+	}
+
 public:
 
 	/* Default constructor */
@@ -130,11 +134,11 @@ private:
 
 	/* Display an error message and abort the program.
 	Uses a specified message along with the provided array name (for debugging purposes). */
-	void ArrayError(const char* errorMessage)
-	{
-		_ArrayError(errorMessage);
-		abort();
-	}
+	//void ArrayError(const char* errorMessage)
+	//{
+	//	_ArrayError(errorMessage);
+	//	abort();
+	//}
 
 	/* Reallocate the array to store a new capacity of elements.
 	If the new capacity is less than the current array size, array size is decreased to new capacity.
@@ -171,7 +175,9 @@ public:
 	{
 		#if ARRAY_CHECK_OUT_OF_BOUNDS == true
 		if (index >= size) {
-			ArrayError("index out of bounds from Array::At(). aborting");
+			//ArrayError("index out of bounds from Array::At(). aborting");
+			static_assert("a");
+			//abort();
 		}
 		#endif
 		return data[index];
@@ -207,11 +213,7 @@ public:
 		if (size == capacity) {
 			IncreaseCapacityFromAllocator();
 		}
-
-		if (std::is_destructible<T>::value) {
-			data[size].~T();
-		}
-		data[size] = value;
+		data[size] = std::move(value);
 		size++;
 	}
 
@@ -221,11 +223,7 @@ public:
 		if (size == capacity) {
 			IncreaseCapacityFromAllocator();
 		}
-
-		if (std::is_destructible<T>::value) {
-			data[size].~T();
-		}
-		data[size] = value;
+		data[size] = std::move(value);
 		size++;
 	}
 
@@ -371,7 +369,6 @@ public:
 				if (occurrenceCount == occurrence) {
 
 					if (std::is_destructible<T>::value) {
-						std::cout << "manually destroying" << std::endl;
 						if (i == size - 1) {
 							At(i).~T();
 						}
@@ -431,7 +428,8 @@ public:
 	constexpr void InsertAt(const T& element, ArrInt index) 
 	{
 		if (index >= size) {
-			ArrayError("index out of bounds from Array::InsertAt(). aborting");
+			//ArrayError("index out of bounds from Array::InsertAt(). aborting");
+			return;
 		}
 
 		if (size + 1 >= capacity) {
@@ -453,7 +451,8 @@ public:
 	constexpr void RemoveAt(ArrInt index, T* outElement = nullptr) 
 	{
 		if (index >= size) {
-			ArrayError("index out of bounds from Array::RemoveAt(). aborting");
+			//ArrayError("index out of bounds from Array::RemoveAt(). aborting");
+			return;
 		}
 
 		if (outElement) {
