@@ -8,8 +8,15 @@ void _ArrayError(const char* errorMessage)
 	std::cout << "[ARRAY ERROR]: " << errorMessage << '\n';
 }
 
-#define TEST_ASSERT(condition) static_assert(condition, "[Array Compile Unit Test]: " #condition)
+#define _pragmsg(s) _Pragma(#s)
+#define PRAGMA_MESSAGE(msg) _pragmsg(message(#msg))
 
+#define TEST_ASSERT(test) \
+PRAGMA_MESSAGE([RUN UNIT TEST]:  test);	\
+static_assert(test, "[Array Compile Unit Test]: " #test)
+
+//#define RUN_UNIT_TESTS_AT_COMPILE
+#ifdef RUN_UNIT_TESTS_AT_COMPILE
 namespace ArrayCompileUnitTests
 {
 	/* Add a single element to an array and get back out that element. */
@@ -47,7 +54,7 @@ namespace ArrayCompileUnitTests
 		auto arr = Array<int>();
 		for (int i = 0; i < 20; i++) {
 			arr.Add(i);
-			if (arr[i] != i) return;
+			if (arr[i] != i) return false;
 		}
 		return arr.Size() == 20;
 	}
@@ -242,3 +249,4 @@ namespace ArrayCompileUnitTests
 	}
 	TEST_ASSERT(ArrayFillWith());
 }
+#endif

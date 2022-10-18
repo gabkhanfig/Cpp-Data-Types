@@ -1,6 +1,8 @@
 #pragma once
 
 #include <utility>
+#include <type_traits>
+#include <iostream>
 
 #ifndef ARRAY_CHECK_OUT_OF_BOUNDS
 #define ARRAY_CHECK_OUT_OF_BOUNDS true
@@ -98,7 +100,7 @@ public:
 	}
 
 	/* Copy constructor */
-	constexpr Array(const Array<T>& other)
+	constexpr Array(const Array<T, capacityInc>& other)
 	{
 		capacity = other.capacity;
 		size = other.size;
@@ -206,6 +208,9 @@ public:
 			IncreaseCapacityFromAllocator();
 		}
 
+		if (std::is_destructible<T>::value) {
+			data[size].~T();
+		}
 		data[size] = value;
 		size++;
 	}
@@ -217,6 +222,9 @@ public:
 			IncreaseCapacityFromAllocator();
 		}
 
+		if (std::is_destructible<T>::value) {
+			data[size].~T();
+		}
 		data[size] = value;
 		size++;
 	}
@@ -355,17 +363,23 @@ public:
 	Doesn't shrink array, but does decrement size if item is found. 
 	@param element: Comparison value. 
 	@param occurrence (optional): nth occurrence of the element. */
-	constexpr void Remove(const T& element, ArrInt occurrence = 1)
+	constexpr void Remove(const T& element, ArrInt occurrence = 1, bool destructIfCan = true)
 	{
 		ArrInt occurrenceCount = 1;
 		for (ArrInt i = 0; i < size; i++) {
 			if (element == At(i)) {
 				if (occurrenceCount == occurrence) {
 
-					~At(i);
+					if (std::is_destructible<T>::value) {
+						std::cout << "manually destroying" << std::endl;
+						if (i == size - 1) {
+							At(i).~T();
+						}
+					}
 
 					for (ArrInt j = (i); j < (size - 1); j++) {
 						data[j] = std::move(data[j + 1]);
+						//memmove(&data[j + 1], &data[size - 1], sizeof(T) * ((size + 1) - (j + 1)));
 					}
 					size--;
 					return;
@@ -446,7 +460,13 @@ public:
 			*outElement = At(index);
 		}
 		else {
-			~At(index);
+			if (std::is_destructible<T>::value) {
+				if (index == size - 1) {
+					At(index).~T();
+				}
+			}
+			// destructed automatically
+			//At(index).~T();
 		}
 
 		for (ArrInt i = index; i < size - 1; i++) {
@@ -456,7 +476,7 @@ public:
 	}
 
 	/* Set this array equal to another. */
-	constexpr void operator = (const Array<T> other) 
+	constexpr void operator = (const Array<T, capacityInc> other)
 	{
 		if (data)
 			delete[] data;
@@ -471,7 +491,7 @@ public:
 	}
 
 	/* Concatenate two arrays into a new one. */
-	constexpr friend Array<T> operator + (const Array<T>& left, const Array<T>& right) 
+	constexpr friend Array<T> operator + (const Array<T, capacityInc>& left, const Array<T, capacityInc>& right)
 	{
 		Array<T> arr;
 		arr.Reserve(left.Size() + right.Size());
@@ -495,7 +515,7 @@ public:
 		return false;
 	}
 
-	/**/
+	/* Fill the array starting at the current size, until the max capacity, with a specific element. */
 	constexpr void FillWith(const T& element) 
 	{
 		for (ArrInt i = Size(); i < Capacity(); i++) {

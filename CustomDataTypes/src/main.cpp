@@ -20,8 +20,38 @@
 
 #define print(message) std::cout << message << '\n'
 
+struct Test {
+	int* a;
+
+	Test() {
+		a = new int;
+	}
+
+	~Test() {
+		print("Test destructor");
+		delete a;
+	}
+
+	bool operator == (const Test& other) {
+		return a == other.a;
+	}
+
+	void operator = (const Test& other) {
+		a = new int;
+		*a = *other.a;
+	}
+};
+
 int main() {
 
-	Array<int> a;
-	print(a.Size());
+	const int count = 100000000;
+	for (int i = 0; i < count; i++) {
+		Array<Test> arr;
+		Test t = Test();
+		//Test t1 = Test();
+		arr.Add(Test());
+		//arr.Remove(t);
+		print(i);
+	}
+	
 }
