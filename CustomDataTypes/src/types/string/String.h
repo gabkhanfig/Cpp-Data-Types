@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iostream>
-#include <types/array/Array.h>
+#include <types/array/DynamicArray.h>
 
 typedef unsigned char uint8;
 typedef unsigned long long uint64;
@@ -269,9 +269,9 @@ public:
 	String Substring(uint64 start, uint64 end);
 	
 	/* Split string into a copy of array of strings given a character splitter. */
-	Array<String> Split(char splitter);
+	darray<String> Split(char splitter);
 
 	/* Split string into a copy of array of strings given a string splitter. */
-	Array<String> Split(const String& splitter);
+	darray<String> Split(const String& splitter);
 
 };

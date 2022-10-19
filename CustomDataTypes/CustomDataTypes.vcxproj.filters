@@ -21,7 +21,7 @@
     <ClCompile Include="src\Benchmark\Benchmark.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\types\array\Array.cpp">
+    <ClCompile Include="src\types\array\DynamicArray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\types\string\String.cpp">
@@ -44,7 +44,7 @@
     <ClInclude Include="src\Benchmark\Benchmark.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\types\array\Array.h">
+    <ClInclude Include="src\types\array\DynamicArray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\types\string\String.h">

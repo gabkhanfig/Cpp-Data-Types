@@ -3,7 +3,7 @@
 #include "Types/bitset/bitset.h"
 
 //#define ARRAY_CHECK_OUT_OF_BOUNDS false
-#include "types/array/Array.h"
+#include "types/array/DynamicArray.h"
 
 #include "types/string/String.h"
 #include "types/string/SString.h"
@@ -43,18 +43,6 @@ struct Test {
 
 int main() {
 
-	const int count = 100000000;
-	for (int i = 0; i < count; i++) {
-		Array<Test> arr;
-		Test t = Test();
-		////Test t1 = Test();
-		arr.Add(Test());
-		////arr.Remove(t);
-		//
+	sarray<int, 6> arr = { 1, 2, 5, 1, 6, 7, 12, 54 };
 
-		//std::vector<Test> vec;
-		//vec.push_back(t);
-		print(i);
-	}
-	
 }

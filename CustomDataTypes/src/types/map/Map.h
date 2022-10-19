@@ -1,6 +1,6 @@
 #pragma once
 
-#include <types/array/Array.h>
+#include <types/array/DynamicArray.h>
 #include <iostream>
 
 typedef unsigned int uint;
@@ -24,7 +24,7 @@ struct Map
 {
 	struct Bucket 
 	{
-		Array<Pair<K, V>> elements;
+		darray<Pair<K, V>> elements;
 
 		V* Find(const K& key) {
 			for (ArrInt i = 0; i < elements.Size(); i++) {
@@ -102,7 +102,7 @@ struct Map
 
 	void GrowMap() 
 	{
-		Array<Bucket> newBuckets;
+		darray<Bucket> newBuckets;
 
 		const ArrInt newBucketCount = _ArrayCapacityIncrease(bucketCount);
 		newBuckets.Reserve(newBucketCount);

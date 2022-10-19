@@ -1,8 +1,6 @@
 #pragma once
 
 #include <utility>
-#include <type_traits>
-#include <iostream>
 
 #ifndef ARRAY_CHECK_OUT_OF_BOUNDS
 #define ARRAY_CHECK_OUT_OF_BOUNDS true
@@ -12,7 +10,7 @@
 typedef unsigned int ArrInt;
 
 /* Function pointer of function that will output the new capacity value from the current one, when increasing size. */
-typedef ArrInt (*array_capacity_increase)(ArrInt);
+typedef ArrInt (*darray_cap_inc)(ArrInt);
 
 //extern ArrInt _ArrayCapacityIncrease(ArrInt currentCapacity);
 extern void _ArrayError(const char* errorMessage);
@@ -30,6 +28,8 @@ constexpr ArrInt _ArrayCapacityIncrease(ArrInt currentCapacity)
 	}
 }
 
+constexpr ArrInt _DARRAY_INITIAL_CAPACITY = 1;
+
 /*
 Array of dynamically changing size.
 Optionally disable out of bounds checks for indexing 
@@ -41,8 +41,8 @@ by setting the ARRAY_CHECK_OUT_OF_BOUNDS macro to false by doing
 */
 template<
 	typename T,
-	array_capacity_increase capacityInc = _ArrayCapacityIncrease>
-struct Array
+	darray_cap_inc capacityInc = _ArrayCapacityIncrease>
+struct darray
 {
 private:
 
@@ -75,22 +75,18 @@ public:
 		T* data;
 	};
 
-	constexpr bool IsTypeDestructible() {
-		return std::is_destructible_v<T>;
-	}
-
 public:
 
 	/* Default constructor */
-	constexpr Array()
+	constexpr darray()
 	{
-		data = new T[1];
-		capacity = 1;
+		data = new T[_DARRAY_INITIAL_CAPACITY];
+		capacity = _DARRAY_INITIAL_CAPACITY;
 		size = 0;
 	}
 
 	/* Initializer list constructor */
-	constexpr Array(const std::initializer_list<T>& il)
+	constexpr darray(const std::initializer_list<T>& il)
 	{
 		size = il.size();
 		capacity = il.size();
@@ -104,7 +100,7 @@ public:
 	}
 
 	/* Copy constructor */
-	constexpr Array(const Array<T, capacityInc>& other)
+	constexpr darray(const darray<T, capacityInc>& other)
 	{
 		capacity = other.capacity;
 		size = other.size;
@@ -116,7 +112,7 @@ public:
 	}
 
 	/* Destructor. Does not call destructors of data held within. */
-	constexpr ~Array()
+	constexpr ~darray()
 	{
 		delete[] data;
 	}
@@ -134,11 +130,11 @@ private:
 
 	/* Display an error message and abort the program.
 	Uses a specified message along with the provided array name (for debugging purposes). */
-	//void ArrayError(const char* errorMessage)
-	//{
-	//	_ArrayError(errorMessage);
-	//	abort();
-	//}
+	void ArrayError(const char* errorMessage)
+	{
+		_ArrayError(errorMessage);
+		abort();
+	}
 
 	/* Reallocate the array to store a new capacity of elements.
 	If the new capacity is less than the current array size, array size is decreased to new capacity.
@@ -175,9 +171,7 @@ public:
 	{
 		#if ARRAY_CHECK_OUT_OF_BOUNDS == true
 		if (index >= size) {
-			//ArrayError("index out of bounds from Array::At(). aborting");
-			static_assert("a");
-			//abort();
+			ArrayError("Index out of bounds from Array::At().");
 		}
 		#endif
 		return data[index];
@@ -213,7 +207,7 @@ public:
 		if (size == capacity) {
 			IncreaseCapacityFromAllocator();
 		}
-		data[size] = std::move(value);
+		data[size] = value;
 		size++;
 	}
 
@@ -274,7 +268,7 @@ public:
 	}
 
 	/* Add the contents of another array to this one. */
-	constexpr void AppendArray(const Array<T, capacityInc>& other) 
+	constexpr void AppendArray(const darray<T, capacityInc>& other) 
 	{
 		const ArrInt newSize = size + other.size; 
 		if (newSize > capacity) {
@@ -288,7 +282,7 @@ public:
 	}
 
 	/* Append another array to this one. */
-	constexpr void operator += (const Array<T, capacityInc>& other)
+	constexpr void operator += (const darray<T, capacityInc>& other)
 	{
 		AppendArray(other);
 	}
@@ -367,16 +361,8 @@ public:
 		for (ArrInt i = 0; i < size; i++) {
 			if (element == At(i)) {
 				if (occurrenceCount == occurrence) {
-
-					if (std::is_destructible<T>::value) {
-						if (i == size - 1) {
-							At(i).~T();
-						}
-					}
-
 					for (ArrInt j = (i); j < (size - 1); j++) {
 						data[j] = std::move(data[j + 1]);
-						//memmove(&data[j + 1], &data[size - 1], sizeof(T) * ((size + 1) - (j + 1)));
 					}
 					size--;
 					return;
@@ -428,7 +414,7 @@ public:
 	constexpr void InsertAt(const T& element, ArrInt index) 
 	{
 		if (index >= size) {
-			//ArrayError("index out of bounds from Array::InsertAt(). aborting");
+			ArrayError("Index out of bounds from Array::InsertAt().");
 			return;
 		}
 
@@ -451,21 +437,11 @@ public:
 	constexpr void RemoveAt(ArrInt index, T* outElement = nullptr) 
 	{
 		if (index >= size) {
-			//ArrayError("index out of bounds from Array::RemoveAt(). aborting");
 			return;
 		}
 
 		if (outElement) {
 			*outElement = At(index);
-		}
-		else {
-			if (std::is_destructible<T>::value) {
-				if (index == size - 1) {
-					At(index).~T();
-				}
-			}
-			// destructed automatically
-			//At(index).~T();
 		}
 
 		for (ArrInt i = index; i < size - 1; i++) {
@@ -475,7 +451,7 @@ public:
 	}
 
 	/* Set this array equal to another. */
-	constexpr void operator = (const Array<T, capacityInc> other)
+	constexpr void operator = (const darray<T, capacityInc> other)
 	{
 		if (data)
 			delete[] data;
@@ -490,9 +466,9 @@ public:
 	}
 
 	/* Concatenate two arrays into a new one. */
-	constexpr friend Array<T> operator + (const Array<T, capacityInc>& left, const Array<T, capacityInc>& right)
+	constexpr friend darray<T> operator + (const darray<T, capacityInc>& left, const darray<T, capacityInc>& right)
 	{
-		Array<T> arr;
+		darray<T> arr;
 		arr.Reserve(left.Size() + right.Size());
 		arr.InsertElements(left.data, left.Size());
 		arr.InsertElements(right.data, right.Size());
@@ -523,7 +499,7 @@ public:
 	}
 
 	/* DANGEROUS!!!!! */
-	constexpr T* GetRawData() 
+	constexpr T* GetData() 
 	{
 		return data;
 	}

@@ -22,11 +22,10 @@ struct bitset
 {
 	static_assert(bitQuantity != 0, "bitset cannot have a quantity of 0");
 
-	typedef std::conditional_t<bitQuantity == 0, void,
-					std::conditional_t <bitQuantity <= 8, unsigned char,
-					std::conditional_t <bitQuantity <= 16, unsigned short,
-					std::conditional_t<bitQuantity <= 32, unsigned int, unsigned long long
-					>>>> Bittype;	
+	typedef std::conditional_t <bitQuantity <= 8, unsigned char,
+			std::conditional_t <bitQuantity <= 16, unsigned short,
+			std::conditional_t<bitQuantity <= 32, unsigned int, unsigned long long
+			>>> Bittype;	
 	
 	/* Get the number of array elements held in this bitset. */
 	constexpr static int GetArrayNum() { return (bitQuantity - 1) / 64 + 1; }

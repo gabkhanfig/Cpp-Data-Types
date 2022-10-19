@@ -60,7 +60,7 @@ String String::Substring(uint64 start, uint64 end)
 	return String(substr);
 }
 
-Array<String> String::Split(char splitter)
+darray<String> String::Split(char splitter)
 {
 	std::cout << "gonna split string " << *this << std::endl;
 
@@ -69,7 +69,7 @@ Array<String> String::Split(char splitter)
 	const char* cstr = CString();
 	const uint64 len = Length();
 
-	Array<String> arr;
+	darray<String> arr;
 
 	for (int i = 0; i < len + 1; i++) {
 		if (cstr[i] == splitter) {
@@ -87,7 +87,7 @@ Array<String> String::Split(char splitter)
 	return arr;
 }
 
-Array<String> String::Split(const String& splitter)
+darray<String> String::Split(const String& splitter)
 {
 	uint64 first = 0;
 
@@ -95,7 +95,7 @@ Array<String> String::Split(const String& splitter)
 	const uint64 len = Length();
 	const char* cstr = CString();
 
-	Array<String> arr;
+	darray<String> arr;
 
 	for (int i = 0; i < len + 1; i++) {
 		const uint64 end = i + splitlen;
